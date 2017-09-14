@@ -1,9 +1,21 @@
 html,
 body {
+    background-color: #000;
+    margin: 0;
+    padding: 0;
     text-align: center;
 }
 
 form,
 input {
+    margin: 10px auto;
+}
+
+.answer {
+    background-color: #fff;
+    border: 1px solid none;
+    border-radius: 5px;
+    height: 350px;
     margin: 15px auto;
+    padding: 5px;
 }
