@@ -1,58 +1,60 @@
 <!DOCTYPE html>
-<html lang="fr">
+
+<html>
 
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Minichat PHP/SQL</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css">
     <link rel="stylesheet" href="style.css">
+    <title>Mini-chat</title>
 </head>
 
 <body>
+    <!--  Création d'un formulaire pour le pseudo & le message  -->
+    <div class="jumbotron">
+        <h1>MiniChat PHP/mySQL</h1>
+        <form action="minichat_post.php" method="post">
+            <p>
+                <label for="pseudo">Pseudo :</label>
+                <input type="text" name="pseudo" id="pseudo"><br />
+                <label for="message">Message :</label>
+                <input type="text" name="message" id="message"><br />
+                <input type="submit" value="Envoyer">
+            </p>
+        </form>
+    </div>
 
-    <!-- Formulaire pour entrer le pseudo et le message -->
-    <form action="minichat_post.php" method="post">
 
-        <label for="pseudo">Pseudo</label>
-        <input type="text" id="pseudo" name="Pseudo" />
-        <br>
-        <label for="message">Message</label>
-        <input type="text" id="message" name="message">
-        <br>
-        <input type="submit" value="Envoyer">
+    <?php
 
-    </form>
 
-    <!-- Début du PHP / Connexion à la base de donnéés -->
-    <?php    
-    
-        try
+    /* Connexion à la base de donnée en vérifiant les potentielles erreurs */
+try
 
-            {
+{
+    $bdd = new PDO('mysql:host=localhost;dbname=minichat;charset=utf8', 'root', 'Skaoune88');
+}
 
-                $bdd = new PDO('mysql:host=localhost;dbname=test;charset=utf8', 'root', 'Skaoune88');
+catch(Exception $e)
 
-            }
+{
+        die('Erreur : '.$e->getMessage());
+}?>
 
-        catch(Exception $e)
+        <div class="container answer">
 
-            {
+            <?php
+            
+            /* Reception des derniers messages enregistré */
+            $reponse = $bdd->query('SELECT pseudo, message FROM minichat ORDER BY ID DESC LIMIT 0, 5'); 
+           
+            /* Boucle pour afficher les messages */
+            while ($donnees = $reponse->fetch()) { echo '
+            <p><strong>' . htmlspecialchars($donnees['pseudo']) . '</strong> : ' . htmlspecialchars($donnees['message']) . '</p>'; } $reponse->closeCursor(); 
+            
+            ?>
+        </div>
 
-                die('Erreur : '.$e->getMessage());
-
-            }
-    
-        $reponse = $bdd->query('SELECT pseudo, message FROM minichat ORDER BY ID DESC LIMIT 0, 5');
-    
-        /* Boucle pour afficher les derniers messages*/
-        
-        while ($donnees = $reponse->fetch())
-            {
-                echo '<p><strong>' . htmlspecialchars($donnees['pseudo']) . '</strong> : ' . htmlspecialchars($donnees['message']) . '</p>';
-            }
-
-        $reponse->closeCursor();
-    ?>
 </body>
 
 </html>
