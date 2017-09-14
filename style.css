@@ -1,0 +1,9 @@
+html,
+body {
+    text-align: center;
+}
+
+form,
+input {
+    margin: 15px auto;
+}
